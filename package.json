@@ -1,0 +1,14 @@
+{
+  "name": "financemanager-root",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "i18next-browser-languagedetector": "^8.2.0",
+    "lsof": "^0.1.0"
+  }
+}
