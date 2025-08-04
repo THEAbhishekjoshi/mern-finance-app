@@ -4,9 +4,19 @@ import express from 'express';
 import cors from 'cors';
 //testing copy
 const app = express();
+const allowedOrigins = [
+  process.env.CLIENT_URL,           // Vercel frontend
+  'http://localhost:5173'           // Local development
+];
 app.use(cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
+    origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
 }));
 app.use(express.json());
 
@@ -21,7 +31,7 @@ import sendEmailRouter from './API/onboarding/sendEmail.js';
 import verifyEmailRouter from './API/onboarding/verifyEmail.js'
 import plaidRouter from './API/plaid/generateToken.js'
 import geminiRouter from './API/gemini/geminiai.js';
-import forgotRouter from './API/forgotPassword/forgotpassword.js' 
+import forgotRouter from './API/forgotPassword/forgotpassword.js'
 import setPasswordRouter from './API/forgotPassword/resetPassword.js'
 
 app.use("/api", registerRouter);
@@ -34,9 +44,9 @@ app.use("/api", sendOtpRouter)
 app.use("/api", sendEmailRouter)
 app.use("/api", verifyEmailRouter)
 app.use("/api", plaidRouter)
-app.use("/api",geminiRouter)
-app.use("/api",forgotRouter)
-app.use("/api",setPasswordRouter)
+app.use("/api", geminiRouter)
+app.use("/api", forgotRouter)
+app.use("/api", setPasswordRouter)
 app.listen(5004, () => {
     console.log("Server is running at 5004:")
 })
