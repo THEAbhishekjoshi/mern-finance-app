@@ -4,29 +4,14 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-app.use(cors()) //allows all origins
-// const allowedOrigins = [
-//   process.env.CLIENT_URL,           // Vercel frontend
-//   'http://localhost:5173'           // Local development
-// ];
-// app.use(cors({
-//     origin: function (origin, callback) {
-//         if (allowedOrigins.includes(origin)) {
-//             callback(null, true);
-//         } else {
-//             callback(new Error('Not allowed by CORS'));
-//         }
-//     },
-//     credentials: true
-// }));
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     console.log("Incoming origin:", origin);
-//     callback(null, true);  // Allow all origins
-//   },
-//   credentials: true
-// }));
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE']
+}));
+
+app.options('*', cors());
 
 app.use(express.json());
 
