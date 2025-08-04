@@ -15,7 +15,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     //if(!(email===userEmail)) return toast.error("Incorrect Email")
     try{
-        const response = await axios.post('${import.meta.env.VITE_API_URL}/api/forgotpassword',{email:email})
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/forgotpassword`,{email:email})
         if(response.status===200){
           toast.success(response.data.message)
             navigate('/sendmessage')

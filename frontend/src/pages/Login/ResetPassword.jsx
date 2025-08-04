@@ -22,7 +22,7 @@ const ResetPassword = () => {
       return;
     }
     try {
-      const response = await axios.post('${import.meta.env.VITE_API_URL}/api/resetpassword', { confirmPassword }, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/resetpassword`, { confirmPassword }, {
         headers: {
           Authorization: `Bearer ${token}`
         }

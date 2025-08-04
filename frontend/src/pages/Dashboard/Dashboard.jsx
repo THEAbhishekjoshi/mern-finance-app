@@ -57,7 +57,7 @@ const Dashboard = function FinancialDashboard() {
     const fetchTransactions = async () => {
       for (let acc of accounts) {
         try {
-          const res = await axios.post("http://localhost:5004/api/transaction", {
+          const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/transaction`, {
             accessToken: acc.accessTokens,
             timePeriod: selectedDays,
           });
