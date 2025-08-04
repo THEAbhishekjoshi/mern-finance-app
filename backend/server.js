@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-
+app.use(cors()) //allows all origins
 // const allowedOrigins = [
 //   process.env.CLIENT_URL,           // Vercel frontend
 //   'http://localhost:5173'           // Local development
@@ -20,13 +20,13 @@ const app = express();
 //     credentials: true
 // }));
 
-app.use(cors({
-  origin: function (origin, callback) {
-    console.log("Incoming origin:", origin);
-    callback(null, true);  // Allow all origins
-  },
-  credentials: true
-}));
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     console.log("Incoming origin:", origin);
+//     callback(null, true);  // Allow all origins
+//   },
+//   credentials: true
+// }));
 
 app.use(express.json());
 
