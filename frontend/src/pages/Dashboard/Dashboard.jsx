@@ -20,7 +20,7 @@ import GaugeChart from '../../components/GaugeChart';
 import BudgetBarChart from '../../components/BudgetBarChart';
 import GeminiChatbot from '../../components/ChatBot';
 import groupTransactionsByMonth from '../../components/groupTransactionByMonth'
-import recentTransaction from '../../components/RecentTransaction';
+import recentTransaction from '../../components/recentTransaction';
 
 
 const Dashboard = function FinancialDashboard() {
@@ -33,10 +33,6 @@ const Dashboard = function FinancialDashboard() {
   console.log("fulllname:",fullName)
   const [recent, setRecent] = useState([]);
   const [maxIndex, setMaxIndex] = useState(3);
-
-
-
-
 
   //Show the Total Balance 
   const account = useSelector((state) => state.plaidAccountInfo.accounts);
