@@ -2,22 +2,30 @@ import './config/env.js';
 
 import express from 'express';
 import cors from 'cors';
-//testing copy
-const app = express();
-const allowedOrigins = [
-  process.env.CLIENT_URL,           // Vercel frontend
-  'http://localhost:5173'           // Local development
-];
+
+// const app = express();
+// const allowedOrigins = [
+//   process.env.CLIENT_URL,           // Vercel frontend
+//   'http://localhost:5173'           // Local development
+// ];
+// app.use(cors({
+//     origin: function (origin, callback) {
+//         if (allowedOrigins.includes(origin)) {
+//             callback(null, true);
+//         } else {
+//             callback(new Error('Not allowed by CORS'));
+//         }
+//     },
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
+  origin: function (origin, callback) {
+    callback(null, true);  // Allow all origins
+  },
+  credentials: true
 }));
+
 app.use(express.json());
 
 import registerRouter from './API/register/register.js';
