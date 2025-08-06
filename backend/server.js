@@ -4,6 +4,12 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
+app.use(cors({
+  origin: "https://mern-finance-app-n34m.vercel.app",
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.options('*', cors());
 
 // 1
 // app.use(cors()) //allows all origins
@@ -40,13 +46,11 @@ const app = express();
 // }));
 
 //4
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'] // <- allow custom headers
-}));
-
-app.options('*', cors());
+// app.use(cors({
+//   origin: process.env.CLIENT_URL,
+//   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'] // <- allow custom headers
+// }));
 
 app.use(express.json());
 
