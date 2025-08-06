@@ -4,71 +4,12 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-// CORS Configuration
-const allowedOrigins = [
-  process.env.CLIENT_URL,           // e.g., https://mern-finance-app-n34m.vercel.app
-  'http://localhost:5173'           // Local development
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    console.log("orgin:",origin)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow cookies/authorization headers
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: process.env.CLIENT_URL,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'] // <- allow custom headers
 }));
-
-//Enable preflight across all routes
 app.options('*', cors());
-
-// 1
-// app.use(cors()) //allows all origins
-// const allowedOrigins = [
-//   process.env.CLIENT_URL,           // Vercel frontend
-//   'http://localhost:5173'           // Local development
-// ];
-
-//2
-// app.use(cors({
-//     origin: function (origin, callback) {
-//         if (allowedOrigins.includes(origin)) {
-//             callback(null, true);
-//         } else {
-//             callback(new Error('Not allowed by CORS'));
-//         }
-//     },
-//     credentials: true
-// }));
-
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     console.log("Incoming origin:", origin);
-//     callback(null, true);  // Allow all origins
-//   },
-//   credentials: true
-// }));
-
-//3
-// app.use(cors({
-//   origin: process.env.CLIENT_URL,
-//   credentials: true,
-//   methods: ['GET', 'POST', 'PATCH', 'DELETE']
-// }));
-
-//4
-// app.use(cors({
-//   origin: process.env.CLIENT_URL,
-//   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization'] // <- allow custom headers
-// }));
-
 app.use(express.json());
 
 import registerRouter from './API/register/register.js';
