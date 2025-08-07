@@ -25,7 +25,7 @@ export default function GeminiChatbot() {
         role: msg.from === 'user' ? 'user' : 'model',
         parts: [{ text: msg.text }]
       }));
-      const response = await axios.post("http://localhost:5004/api/geminiapi", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/geminiapi`, {
         contents: input,
         formattedHistory
       });

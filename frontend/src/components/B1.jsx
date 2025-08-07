@@ -15,7 +15,7 @@ const B1 = () => {
     // Step 1: Create link_token on load
     useEffect(() => {
         const createLinkToken = async () => {
-            const response = await axios.post('http://localhost:5004/api/create_link_token');
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/create_link_token`);
             setLinkToken(response.data.link_token);
         };
         createLinkToken();
@@ -24,7 +24,7 @@ const B1 = () => {
     const onSuccess = async (public_token, metadata) => {
         try {
             // Exchange token
-            const response = await axios.post('http://localhost:5004/api/exchange_public_token', {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/exchange_public_token`, {
                 public_token,
             });
             const access_Token = response.data.accessToken;
@@ -32,7 +32,7 @@ const B1 = () => {
 
 
             // Fetch account details
-            const accountResponse = await axios.post('http://localhost:5004/api/accounts', {
+            const accountResponse = await axios.post(`${import.meta.env.VITE_API_URL}/api/accounts`, {
                 accessToken: access_Token,
             });
             console.log('Account Response:', accountResponse);
