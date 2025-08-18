@@ -10,39 +10,44 @@ import { useTranslation } from 'react-i18next';
 
 
 ///Without the brackets, JS would treat it as a literal key "e.target.name" (a string), not the value of the variable.
-    //...formData copies all current values (like name, email, password)
-    //Then [e.target.name]: e.target.value overwrites only the one field that changed.
-    //JS objects don't allow duplicate keys — so it replaces the old value of the key if it already exists.
+//...formData copies all current values (like name, email, password)
+//Then [e.target.name]: e.target.value overwrites only the one field that changed.
+//JS objects don't allow duplicate keys — so it replaces the old value of the key if it already exists.
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const [formData,setFormData] =useState({
-        fullname:'',
-        email:'',
-        password:''
+    const [formData, setFormData] = useState({
+        fullname: '',
+        email: '',
+        password: ''
     })
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
-    const lang = useSelector((state)=> state.i18n.lang);
+    const lang = useSelector((state) => state.i18n.lang);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
-        setFormData({...formData,[e.target.name]: e.target.value})
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/signup`, formData);
-            toast.success(res.data.message)
+            const res = await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/signup`,
+                formData
+            );
+            toast.success(res.data.message);
             if (res.status === 200) {
-                // Redirect to login page after successful signup
                 navigate('/login');
             }
+        } catch (error) {
+            console.error('Signup error:', error);
+            toast.error(error?.response?.data?.message || 'Signup Failed');
+        } finally {
+            setLoading(false);
         }
-        catch (error) {
-            console.error("Signup error:", error);
-            toast.error(error?.response?.data?.message || "Signup Failed")
-        }
-    }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -65,65 +70,84 @@ const Register = () => {
                 <h2 className="text-xl font-semibold text-center mb-1">{t("Create a new account")}</h2>
                 <p className="text-sm text-center text-gray-500 mb-6">{t("Enter your details to register.")}</p>
 
-                {/* Fullname */}
-                <div className="mb-4">
-                    <label className="text-sm font-medium mb-1 block">{t("Fullname")}</label>
-                    <div className="flex items-center border rounded px-3 py-2">
-                        <FaUser className="text-gray-400 mr-2" />
-                        <input
-                            name="fullname"
-                            type="text"
-                            placeholder="Ex: John doe"
-                            className="w-full outline-none text-sm"
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-
-                {/* Email */}
-                <div className="mb-4">
-                    <label className="text-sm font-medium mb-1 block">{t("Email")}</label>
-                    <div className="flex items-center border rounded px-3 py-2">
-                        <FaEnvelope className="text-gray-400 mr-2" />
-                        <input
-                            name="email"
-                            type="email"
-                            placeholder="Ex: Johndoe@financial.com"
-                            className="w-full outline-none text-sm"
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-
-                {/* Password */}
-                <div className="mb-2">
-                    <label className="text-sm font-medium mb-1 block">{t("Password")}</label>
-                    <div className="flex items-center border rounded px-3 py-2">
-                        <FaLock className="text-gray-400 mr-2" />
-                        <input
-                            name='password'
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Enter your password"
-                            className="w-full outline-none text-sm"
-                            onChange={handleChange}
-                        />
-                        <button
-                            type="button"
-                            className="ml-2 text-gray-400"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
-                        </button>
-                    </div>
-                    <p className="text-xs text-gray-400 mt-1 ml-1">
-                        {t("Must contain 1 uppercase letter, 1 number, min. 8 characters.")}
-                    </p>
-                </div>
-
-                {/* Button */}
+                {/* Form */}
                 <form onSubmit={handleSubmit}>
-                    <button className="w-full bg-gray-700 text-white py-2 rounded mt-6 hover:bg-gray-800 transition">
-                        {t("Sign Up")}
+                    {/* Fullname */}
+                    <div className="mb-4">
+                        <label className="text-sm font-medium mb-1 block">
+                            {t('Fullname')}
+                        </label>
+                        <div className="flex items-center border rounded px-3 py-2">
+                            <FaUser className="text-gray-400 mr-2" />
+                            <input
+                                name="fullname"
+                                type="text"
+                                placeholder="Ex: John doe"
+                                className="w-full outline-none text-sm"
+                                onChange={handleChange}
+                                required
+                                autoComplete="name"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Email */}
+                    <div className="mb-4">
+                        <label className="text-sm font-medium mb-1 block">
+                            {t('Email')}
+                        </label>
+                        <div className="flex items-center border rounded px-3 py-2">
+                            <FaEnvelope className="text-gray-400 mr-2" />
+                            <input
+                                name="email"
+                                type="email"
+                                placeholder="Ex: Johndoe@financial.com"
+                                className="w-full outline-none text-sm"
+                                onChange={handleChange}
+                                required
+                                autoComplete="email"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Password */}
+                    <div className="mb-2">
+                        <label className="text-sm font-medium mb-1 block">
+                            {t('Password')}
+                        </label>
+                        <div className="flex items-center border rounded px-3 py-2">
+                            <FaLock className="text-gray-400 mr-2" />
+                            <input
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Enter your password"
+                                className="w-full outline-none text-sm"
+                                onChange={handleChange}
+                                required
+                                autoComplete="new-password"
+                            />
+                            <button
+                                type="button"
+                                className="ml-2 text-gray-400"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </button>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1 ml-1">
+                            {t(
+                                'Must contain 1 uppercase letter, 1 number, min. 8 characters.'
+                            )}
+                        </p>
+                    </div>
+
+                    {/* Button */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-gray-700 text-white py-2 rounded mt-6 hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Signing up...' : t('Sign Up')}
                     </button>
                 </form>
 

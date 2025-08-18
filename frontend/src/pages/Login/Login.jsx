@@ -98,6 +98,7 @@ const Login = () => {
                                 className="w-full outline-none text-sm"
                                 onChange={handleChange}
                                 required
+                                autoComplete="email"
                             />
                         </div>
                     </div>
@@ -115,6 +116,7 @@ const Login = () => {
                                 className="w-full outline-none text-sm"
                                 onChange={handleChange}
                                 required
+                                autoComplete="current-password"
                             />
                             <button
                                 type="button"
