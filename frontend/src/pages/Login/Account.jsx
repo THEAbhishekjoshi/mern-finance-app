@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAccountType } from '../../features/onboarding/registrationSlice';
 import { useTranslation } from 'react-i18next';
+import { setLanguage } from '../../features/languageSelector/languageSlice';
 
 const Account = () => {
     //const [selectedType, setSelectedType] = useState('personal');

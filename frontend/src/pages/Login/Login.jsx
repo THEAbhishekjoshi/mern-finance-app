@@ -15,6 +15,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
     const lang = useSelector((state) => state.i18n.lang);
+    const [loading, setLoading] = useState(false);
 
 
     const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ const Login = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const userRes = await axios.post(`${import.meta.env.VITE_API_URL}/api/login`, formData);
             toast.success(userRes.data.message);
@@ -58,6 +60,8 @@ const Login = () => {
         catch (error) {
             toast.error(error?.response?.data?.message || "Login Failed");
 
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -146,9 +150,10 @@ const Login = () => {
                     {/* Sign In Button */}
                     <button
                         type="submit"
-                        className="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-800 transition"
+                        disabled={loading}
+                        className="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-800 transition  disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {t("Sign In")}
+                        {loading ? 'Signing in...' : t('Sign In')}
                     </button>
                 </form>
             </div>

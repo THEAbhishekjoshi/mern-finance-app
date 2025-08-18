@@ -24,6 +24,7 @@ const Register = () => {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const lang = useSelector((state) => state.i18n.lang);
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
